@@ -10,7 +10,7 @@ class App < Sinatra::Base
   end
 
   post '/post' do
-    if request.body == "POSTDATA"
+    if request.body.read == "POSTDATA"
       'OK'
     else
       'FAIL'
