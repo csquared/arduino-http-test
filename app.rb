@@ -2,7 +2,7 @@ require 'sinatra/base'
 
 class App < Sinatra::Base
   before do
-    puts "body=#{request.body}"
+    puts "body=#{request.body.read}"
   end
 
   get '/get' do
@@ -10,6 +10,7 @@ class App < Sinatra::Base
   end
 
   post '/post' do
+    request.body.rewind
     if request.body.read == "POSTDATA"
       'OK'
     else
