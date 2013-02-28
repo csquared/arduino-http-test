@@ -1,6 +1,10 @@
 require 'sinatra/base'
 
 class App < Sinatra::Base
+  before do
+    puts "body=#{request.body}"
+  end
+
   get '/get' do
     'OK'
   end
