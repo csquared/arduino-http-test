@@ -6,6 +6,7 @@ class App < Sinatra::Base
   end
 
   get '/get-header' do
+    puts "test_header=#{headers['X-Test-Header']}"
     if headers['X-Test-Header'] == 'true'
       'OK'
     else
