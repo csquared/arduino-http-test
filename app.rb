@@ -6,7 +6,7 @@ class App < Sinatra::Base
   end
 
   get '/get-header' do
-    header = env['X_TEST_HEADER']
+    header = env['X-Test-Header']
     puts "test_header=#{header}"
     if header == 'true'
       'OK'
