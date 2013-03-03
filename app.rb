@@ -6,22 +6,31 @@ class App < Sinatra::Base
   end
 
   get '/get-header' do
-    header = env['HTTP_X_TEST_HEADER']
-    puts "test_header=#{header}"
-    if header == 'true'
-      'OK'
-    else
-      'FAIL'
-    end
+    test_header
+    'OK'
   end
 
   post '/post' do
+    test_post_body
+    'OK'
+  end
+
+  post '/post-headers' do
+    test_post_body
+    test_header
+    'OK'
+  end
+
+  private
+  def test_header
+    header = env['HTTP_X_TEST_HEADER']
+    puts "test_header=#{header}"
+    halt 420, 'FAIL' unless header == 'true'
+  end
+
+  def test_post_body
     postbody = request.body.string
     puts "body=#{postbody}"
-    if postbody == "POSTDATA"
-      'OK'
-    else
-      'FAIL'
-    end
+    halt 420, 'FAIL' unless postbody == "POSTDATA"
   end
 end
