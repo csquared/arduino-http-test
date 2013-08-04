@@ -1,21 +1,26 @@
 require 'sinatra/base'
+$stdout.sync = true
 
 class App < Sinatra::Base
   get '/get' do
+    puts "/get"
     'OK'
   end
 
   get '/get-header' do
+    puts "/get-header"
     test_header
     'OK'
   end
 
   post '/post' do
+    puts "/post"
     test_post_body
     'OK'
   end
 
   post '/post-headers' do
+    puts '/post-headers'
     test_post_body
     test_header
     'OK'
