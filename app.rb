@@ -2,28 +2,39 @@ require 'sinatra/base'
 $stdout.sync = true
 
 class App < Sinatra::Base
+  use Rack::CommonLogger
+
   get '/get' do
-    puts "/get"
     'OK'
   end
 
   get '/get-header' do
-    puts "/get-header"
     test_header
     'OK'
   end
 
-  post '/post' do
-    puts "/post"
-    test_post_body
+  get '/get-headers' do
+    test_two_headers
     'OK'
   end
 
-  post '/post-headers' do
-    puts '/post-headers'
-    test_post_body
-    test_header
-    'OK'
+  [:put, :post, :delete].each do |method|
+    self.send(method, '/data') do
+      test_post_body
+      'OK'
+    end
+
+    self.send(method, '/data-header') do
+      test_post_body
+      test_header
+      'OK'
+    end
+
+    self.send(method, '/data-headers') do
+      test_post_body
+      test_two_headers
+      'OK'
+    end
   end
 
   private
@@ -33,8 +44,15 @@ class App < Sinatra::Base
     halt 420, 'FAIL' unless header == 'true'
   end
 
+  def test_two_headers
+    header1 = env['HTTP_X_TEST_HEADER1']
+    header2 = env['HTTP_X_TEST_HEADER2']
+    puts "header1=#{header1} header2=#{header2}"
+    halt 420, 'FAIL' unless header1 == 'one' && header2 == 'two'
+  end
+
   def test_post_body
-    postbody = request.body.string
+    postbody = request.body.read
     puts "body=#{postbody}"
     halt 420, 'FAIL' unless postbody == "POSTDATA"
   end
