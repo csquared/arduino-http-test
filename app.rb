@@ -18,6 +18,10 @@ class App < Sinatra::Base
     'OK'
   end
 
+  delete '/del' do
+    'OK'
+  end
+
   [:put, :post, :delete].each do |method|
     self.send(method, '/data') do
       test_post_body
